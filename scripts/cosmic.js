@@ -30,8 +30,8 @@ const ENV = {
 
 $.env(ENV);
 
-await $`mkdir -p /root/o/`; // Output folder
-await $`mkdir -p /root/tmp/`; // Temp working dir
+await $`mkdir -p ${ROOT}/o/`; // Output folder
+await $`mkdir -p ${ROOT}/tmp/`; // Temp working dir
 
 // Eg: eval $(bun scripts/cosmic.js)
 //

@@ -1,0 +1,36 @@
+FROM ubuntu:noble
+
+ENV LANG=en_US.utf8  LC_ALL=en_US.utf8
+ENV TZ=Europe/London
+RUN echo "Europe/London" > /etc/timezone
+
+RUN apt-get update && \
+    DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
+    automake \
+    ca-certificates \
+    cmake \
+    curl \
+    git \
+    gnupg \
+    less \
+    locales \
+    neovim \
+    ninja-build \
+    patch \
+    pkg-config \
+    qemu-user-static \
+    qemu-utils \
+    tar \
+    tzdata \
+    unzip \
+    wget \
+    zip
+
+RUN localedef -i en_US -c -f UTF-8 -A /usr/share/locale/locale.alias en_US.UTF-8 && \
+    sed -i -e 's/# en_US.UTF-8 UTF-8/en_US.UTF-8 UTF-8/' /etc/locale.gen && \
+    dpkg-reconfigure --frontend=noninteractive locales && \
+    update-locale LANG=en_US.UTF-8
+
+RUN curl -fsSL https://bun.sh/install | bash
+
+WORKDIR "/root/"
