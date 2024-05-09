@@ -76,8 +76,8 @@ mmap mmapmodule.c
 select selectmodule.c
 
 # XML
-# _elementtree _elementtree.c
-# pyexpat pyexpat.c
+_elementtree _elementtree.c
+pyexpat pyexpat.c
 
 # hashing builtins
 _blake2 _blake2/blake2module.c _blake2/blake2b_impl.c _blake2/blake2s_impl.c
@@ -98,15 +98,6 @@ _multibytecodec cjkcodecs/multibytecodec.c
 unicodedata unicodedata.c
 
 # Modules with some UNIX dependencies
-
-# audioop audioop.c # deprecated and slated for removal in Python 3.13
-# Open Sound System audio interface is deprecated
-# ossaudiodev ossaudiodev.c
-# Unix shadow password database is deprecated
-# spwd spwdmodule.c
-# Nis is deprecated
-# nis nismodule.c -I/usr/include/tirpc -lnsl -ltirpc
-# _crypt _cryptmodule.c -lcrypt # deprecated and slated for removal in Python 3.13
 
 _posixsubprocess _posixsubprocess.c
 _posixshmem -I$(srcdir)/Modules/_multiprocessing _multiprocessing/posixshmem.c -lrt
@@ -159,4 +150,13 @@ xxsubtype xxsubtype.c  # Required for the test suite to pass!
 
 *disabled*
 
-_sqlite3 _tkinter _curses _curses_panel
+# audioop audioop.c # deprecated and slated for removal in Python 3.13
+# Open Sound System audio interface is deprecated
+# ossaudiodev ossaudiodev.c
+# Unix shadow password database is deprecated
+# spwd spwdmodule.c
+# Nis is deprecated
+# nis nismodule.c -I/usr/include/tirpc -lnsl -ltirpc
+# _crypt _cryptmodule.c -lcrypt # deprecated and slated for removal in Python 3.13
+
+_crypt _curses _curses_panel _sqlite3 _tkinter audioop nis ossaudiodev spwd

@@ -11,17 +11,17 @@ const ROOT = process.env.ROOT;
 
 // Python v3.10
 //
-const NAME = "python310";
+const NAME = "python_310";
 
 $.cwd(`${ROOT}/tmp/`);
 
 // Download ...
-// await $`git clone https://github.com/python/cpython ${NAME} --branch=3.10 --single-branch --no-tags --depth=1`;
+await $`git clone https://github.com/python/cpython ${NAME} --branch=3.10 --single-branch --no-tags --depth=1`;
 
 $.cwd(`${ROOT}/tmp/${NAME}`);
 
 // Use local modules/setup, all static
-await $`cp ${__dirname}/Setup-310 Modules/Setup`;
+await $`cp ${__dirname}/Setup_310 Modules/Setup`;
 
 // Configure ...
 await $`./configure --disable-shared --with-static-libpython \

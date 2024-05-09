@@ -11,7 +11,7 @@ const ROOT = process.env.ROOT;
 
 // Python v3.11
 //
-const NAME = "python311";
+const NAME = "python_311";
 
 $.cwd(`${ROOT}/tmp/`);
 
@@ -21,16 +21,19 @@ $.cwd(`${ROOT}/tmp/`);
 $.cwd(`${ROOT}/tmp/${NAME}`);
 
 // Use local modules/setup, all static
-await $`cp ${__dirname}/Setup-311 Modules/Setup`;
+//
+await $`cp ${__dirname}/Setup_311 Modules/Setup`;
 
-// Configure ...
+// Manual configure ...
 await $`./configure --disable-shared --with-static-libpython \
-    --without-system-expat --without-system-ffi \
+    --without-doc-strings --without-system-expat --without-system-ffi \
     --without-system-libmpdec --with-pymalloc --with-ensurepip=no \
-    --prefix=${ROOT}/o/ LDFLAGS="-static -L${ROOT}/o/lib" \
-    CFLAGS="-Os -static -I${ROOT}/o/include -I${ROOT}/o/include/uuid"`;
+    --prefix=${ROOT}/o/ CCSHARED=" " LDSHARED=" " \
+    LDFLAGS="-static -fno-semantic-interposition -L${ROOT}/o/lib" \
+    CPPFLAGS="-Oz -static -fno-semantic-interposition" \
+    CFLAGS="-Oz -static -fno-semantic-interposition -I${ROOT}/o/include -I${ROOT}/o/include/uuid"`;
 
 // Build ...
-await $`ape make`;
+await $`ape make -j4 EXTRA_CFLAGS="$CFLAGS -DTHREAD_STACK_SIZE=0x100000"`;
 // Check
 await $`./python --version`;
