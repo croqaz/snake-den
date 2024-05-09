@@ -9,14 +9,16 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 import * as cosmic from "../scripts/cosmic.js";
 const ROOT = process.env.ROOT;
 
-// Python v3.11
+// Python v3.11 + Plumbum
+// https://plumbum.readthedocs.io
+// https://github.com/tomerfiliba/plumbum
 //
-const NAME = "python_311";
+const NAME = "py_plumbum";
 
 $.cwd(`${ROOT}/tmp/`);
 
 // Download ...
-// await $`git clone https://github.com/python/cpython ${NAME} --branch=3.11 --single-branch --no-tags --depth=1`;
+await $`git clone https://github.com/python/cpython ${NAME} --branch=3.11 --single-branch --no-tags --depth=1`;
 
 $.cwd(`${ROOT}/tmp/${NAME}`);
 await $`git gc`;
@@ -26,15 +28,18 @@ await $`git gc`;
 await $`cp ${__dirname}/Setup_311 Modules/Setup`;
 
 // Manual configure ...
+// Super tiny linux x86
 await $`./configure --disable-shared --with-static-libpython \
     --without-doc-strings --without-system-expat --without-system-ffi \
     --without-system-libmpdec --with-pymalloc --with-ensurepip=no \
-    --prefix=${ROOT}/o/ CCSHARED=" " LDSHARED=" " \
-    LDFLAGS="-static -fno-semantic-interposition -L${ROOT}/o/lib" \
-    CPPFLAGS="-Oz -DNDEBUG -DSYSDEBUG -DSUPPORT_VECTOR=1" \
-    CFLAGS="-Oz -fmerge-all-constants -fno-semantic-interposition -I${ROOT}/o/include -I${ROOT}/o/include/uuid"`;
+    --disable-test-modules --prefix=${ROOT}/o/ \
+    CCSHARED=" " LDSHARED=" " LDFLAGS="-static -L${ROOT}/o/lib" \
+    OPT="-Os -DTINY -DNDEBUG -DTRUSTWORTHY -Wall" CPPFLAGS="-Os" \
+    CFLAGS="-Os -fno-align-functions -fno-align-jumps -fno-align-labels -fno-align-loops \
+    -fschedule-insns2 -momit-leaf-frame-pointer -foptimize-sibling-calls -DDWARFLESS \
+    -I${ROOT}/o/include -I${ROOT}/o/include/uuid"`;
 
 // Build ...
-await $`ape make -j4 EXTRA_CFLAGS="$CFLAGS -DTHREAD_STACK_SIZE=0x100000"`;
+await $`ape make -j4`;
 // Check
 await $`./python --version`;
