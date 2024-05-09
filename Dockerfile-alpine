@@ -1,0 +1,30 @@
+FROM alpine:latest
+
+ENV LANG=en_US.utf8  LC_ALL=en_US.utf8
+ENV TZ=Europe/London
+RUN echo "Europe/London" > /etc/timezone
+
+RUN apk add --no-cache \
+    automake \
+    ca-certificates \
+    cmake \
+    curl \
+    git \
+    gnupg \
+    neovim \
+    patch \
+    samurai \
+    shadow \
+    tar \
+    unzip \
+    wget \
+    zip \
+    zsh && \
+    chsh --shell /bin/zsh
+
+# RUN cd ~ && git clone https://github.com/jart/cosmopolitan.git --single-branch --no-tags --depth=1 && \
+# run setup & tool/cosmocc/package.sh Cosmocc
+
+WORKDIR "/root/"
+
+ENTRYPOINT ["zsh"]

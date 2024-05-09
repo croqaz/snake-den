@@ -5,23 +5,28 @@ export ARCH=$(uname -m)
 export COSMOCC=$ROOT/cosmocc
 export COSMO=$ROOT/cosmopolitan
 
-cp -v $COSMO/build/bootstrap/ape.elf /usr/bin/ape
-cp -v $COSMO/build/bootstrap/make /usr/local/bin/
+mkdir -p $ROOT/o/    # Output folder
+mkdir -p $ROOT/tmp/  # Temp working dir
 
-# Apelink ...
-cp -v -RP $COSMOCC/bin/*link /usr/local/bin/
-# Cosmo CC, Ar, Cross, Install ...
-cp -v -RP $COSMOCC/bin/cosmo* /usr/local/bin/
-cp -v -RP $COSMOCC/bin/*-linux-cosmo-* /usr/local/bin/
-cp -v -RP $COSMOCC/bin/*-unknown-cosmo-* /usr/local/bin/
+cp -fv $COSMO/build/bootstrap/ape.elf /usr/bin/ape
+
+# usr/local/bin has a higher priority in $PATH
+cp -fv $COSMO/build/bootstrap/make /usr/local/bin/
 
 # Fixupobj, Objbincopy, Zipobj ...
-cp -v $COSMO/build/bootstrap/*obj* /usr/local/bin/
+cp -fv $COSMO/build/bootstrap/*obj* /usr/local/bin/
 # Gzip, Zipcopy ...
-cp -v $COSMO/build/bootstrap/*zip* /usr/local/bin/
+cp -fv $COSMO/build/bootstrap/*zip* /usr/local/bin/
 
-# Remove bad links
-rm /usr/local/bin/*-cosmo-as
-rm /usr/local/bin/*-cosmo-ld*
-cp $COSMOCC/bin/*-cosmo-as /usr/local/bin/
-cp $COSMOCC/bin/*-cosmo-ld* /usr/local/bin/
+# Compile & setup cosmocc (only from time to time)
+# (cd $COSMO && bash tool/cosmocc/package.sh ../cosmocc)
+
+# Apelink ...
+cp -fv -RP $COSMOCC/bin/*link /usr/local/bin/
+
+# Cosmo CC, Ar, Cross, Install ...
+cp -vRP $COSMOCC/bin/cosmo* /usr/local/bin/
+# ar & ld need full copies
+cp -fv $COSMOCC/bin/*-cosmo-[al]* /usr/local/bin/
+# the rest can maintain the symlinks
+cp -vRP $COSMOCC/bin/*-cosmo-[cegnors]* /usr/local/bin/
