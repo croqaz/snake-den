@@ -16,7 +16,7 @@ const NAME = "python_311";
 $.cwd(`${ROOT}/tmp/`);
 
 // Download ...
-// await $`git clone https://github.com/python/cpython ${NAME} --branch=3.11 --single-branch --no-tags --depth=1`;
+await $`git clone https://github.com/python/cpython ${NAME} --branch=3.11 --single-branch --no-tags --depth=1`;
 
 $.cwd(`${ROOT}/tmp/${NAME}`);
 await $`git gc`;
@@ -26,6 +26,7 @@ await $`git gc`;
 await $`cp ${__dirname}/Setup_311 Modules/Setup`;
 
 // Manual configure ...
+// Optimized mode settings from Cosmopolitan build/config.mk
 await $`./configure --disable-shared --with-static-libpython \
     --without-doc-strings --without-system-expat --without-system-ffi \
     --without-system-libmpdec --with-pymalloc --with-ensurepip=no \
