@@ -12,29 +12,28 @@ source $SCRIPTD/../scripts/cosmic.sh
 cd $ROOT/tmp/
 echo $PWD
 
-# Portable UUID C library
-# https://sourceforge.net/projects/libuuid/
+# Expat: fast streaming XML parser written in C99
+# https://github.com/libexpat/libexpat
 #
 NAME="${SCRIPT%.*}"
 
 mkdir $NAME
-wget -nv -O $NAME.tar.gz https://sourceforge.net/projects/libuuid/files/libuuid-1.0.3.tar.gz/download
+wget -nv -O $NAME.tar.gz https://github.com/libexpat/libexpat/releases/download/R_2_5_0/expat-2.5.0.tar.gz
 tar xf $NAME.tar.gz --strip-components=1 -C $NAME
 echo "Archive downloaded and extracted"
 
 cd $ROOT/tmp/$NAME
 echo $PWD
 
-# # Tweak the source code
-# sed -i 's/^static int flock/static int flock2/' gen_uuid.c
-# sed -i 's/flock(state_fd, LOCK_/flock2(state_fd, LOCK_/g' gen_uuid.c
-
 # Configure ...
 ./configure --enable-static --disable-shared \
+    --disable-examples \
+    --disable-tests \
+    --with-getrandom \
     --with-gnu-ld \
+    --without-docbook \
     --without-pic \
-    --prefix=$ROOT/o/ \
-    CFLAGS="-Os"
+    --prefix=${ROOT}/o/ CFLAGS="-Os"
 
 # Build ...
 ape make
