@@ -1,16 +1,16 @@
 #!/usr/bin/env bash
 
-set -e
+set -euxo pipefail
 
 SCRIPTF=$(realpath "$0")  # full path
 SCRIPT=$(basename $SCRIPTF) # file
 SCRIPTD=$(dirname "$SCRIPTF") # folder
+BUILDER="${BUILDER:-cosmic}"
 
 # Read env variables for CC, C++, LD, etc
-source $SCRIPTD/../scripts/cosmic.sh
+source $SCRIPTD/../scripts/env-$BUILDER.sh
 
 cd $ROOT/tmp/
-echo $PWD
 
 # GNU dbm (or GDBM, for short)
 # https://gnu.org.ua/software/gdbm/
@@ -23,9 +23,9 @@ tar xf $NAME.tar.gz --strip-components=1 -C $NAME
 echo "Archive downloaded and extracted"
 
 cd $ROOT/tmp/$NAME
-echo $PWD
 
 # Configure ...
+export COMPATINCLUDEDIR="$ROOT/o/include/gdbm"
 ./configure --enable-static --disable-shared \
     --disable-memory-mapped-io \
     --disable-nls \
@@ -38,6 +38,6 @@ echo $PWD
     CFLAGS="-Os"
 
 # Build ...
-ape make
+make
 # Install ...
-ape make install
+make install

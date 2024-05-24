@@ -1,22 +1,21 @@
 #!/usr/bin/env bash
 
-set -e
+set -euxo pipefail
 
-SCRIPT=$(realpath "$0")
-SCRIPTDIR=$(dirname "$SCRIPT")
+SCRIPTF=$(realpath "$0")
+SCRIPTD=$(dirname "$SCRIPTF")
+BUILDER="${BUILDER:-cosmic}"
 
 # Read env variables for CC, C++, LD, etc
-source $SCRIPTDIR/../scripts/cosmic.sh
+source $SCRIPTD/../scripts/env-$BUILDER.sh
 
 cd $ROOT/tmp/
-echo $PWD
 
 NAME=pytiny_312
 
 git clone https://github.com/python/cpython $NAME --branch=3.12 --single-branch --no-tags --depth=1
 
 cd $ROOT/tmp/$NAME
-echo $PWD
 
 git gc
 
@@ -43,7 +42,7 @@ cp $SCRIPTDIR/Setup_312 Modules/Setup
     -I${ROOT}/o/include -I${ROOT}/o/include/uuid" \
     MODULE_BUILDTYPE=static
 
-ape make -j4 EXTRA_CFLAGS="$CFLAGS -DTHREAD_STACK_SIZE=0x100000"
+make -j4 EXTRA_CFLAGS='-DTHREAD_STACK_SIZE=0x100000'
 
 ls -lh python
 ./python --version

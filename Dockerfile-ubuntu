@@ -51,8 +51,6 @@ RUN apt autoclean && apt autoremove --yes
 #     wget -nv --limit-rate=1m https://cosmo.zip/pub/cosmos/bin/zip && \
 #     chmod +x /usr/local/bin/*
 
-RUN curl -fsSL https://bun.sh/install | bash
-
 WORKDIR "/root/"
 
 ENTRYPOINT ["zsh"]

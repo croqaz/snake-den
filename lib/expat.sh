@@ -1,16 +1,16 @@
 #!/usr/bin/env bash
 
-set -e
+set -euxo pipefail
 
 SCRIPTF=$(realpath "$0")  # full path
 SCRIPT=$(basename $SCRIPTF) # file
 SCRIPTD=$(dirname "$SCRIPTF") # folder
+BUILDER="${BUILDER:-cosmic}"
 
 # Read env variables for CC, C++, LD, etc
-source $SCRIPTD/../scripts/cosmic.sh
+source $SCRIPTD/../scripts/env-$BUILDER.sh
 
 cd $ROOT/tmp/
-echo $PWD
 
 # Expat: fast streaming XML parser written in C99
 # https://github.com/libexpat/libexpat
@@ -23,7 +23,6 @@ tar xf $NAME.tar.gz --strip-components=1 -C $NAME
 echo "Archive downloaded and extracted"
 
 cd $ROOT/tmp/$NAME
-echo $PWD
 
 # Configure ...
 ./configure --enable-static --disable-shared \
@@ -36,6 +35,6 @@ echo $PWD
     --prefix=${ROOT}/o/ CFLAGS="-Os"
 
 # Build ...
-ape make
+make
 # Install ...
-ape make install
+make install
