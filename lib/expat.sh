@@ -17,7 +17,7 @@ cd $ROOT/tmp/
 #
 NAME="${SCRIPT%.*}"
 
-mkdir $NAME
+mkdir -p $NAME
 wget -nv -O $NAME.tar.gz https://github.com/libexpat/libexpat/releases/download/R_2_5_0/expat-2.5.0.tar.gz
 tar xf $NAME.tar.gz --strip-components=1 -C $NAME
 echo "Archive downloaded and extracted"
@@ -26,15 +26,17 @@ cd $ROOT/tmp/$NAME
 
 # Configure ...
 ./configure --enable-static --disable-shared \
-    --disable-examples \
-    --disable-tests \
     --with-getrandom \
     --with-gnu-ld \
     --without-docbook \
+    --without-examples \
     --without-pic \
+    --without-tests \
     --prefix=${ROOT}/o/ CFLAGS="-Os"
 
 # Build ...
 make
 # Install ...
 make install
+
+echo 'OK!'

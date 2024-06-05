@@ -1,22 +1,22 @@
 #!/usr/bin/env bash
 
-set -e
+set -euxo pipefail
 
 SCRIPTF=$(realpath "$0")  # full path
 SCRIPT=$(basename $SCRIPTF) # file
 SCRIPTD=$(dirname "$SCRIPTF") # folder
+BUILDER="${BUILDER:-cosmic}"
 
 # Read env variables for CC, C++, LD, etc
-source $SCRIPTD/../scripts/cosmic.sh
+source $SCRIPTD/../scripts/env-$BUILDER.sh
 
 cd $ROOT/tmp/
-echo $PWD
 
 # XZ Utils
 #
 NAME="${SCRIPT%.*}"
 
-mkdir $NAME
+mkdir -p $NAME
 wget -nv -O $NAME.tar.gz https://sourceforge.net/projects/lzmautils/files/xz-5.4.6.tar.gz/download
 tar xf $NAME.tar.gz --strip-components=1 -C $NAME
 echo "Archive downloaded and extracted"
@@ -35,3 +35,5 @@ echo $PWD
 ape make
 # Install ...
 ape make install
+
+echo 'OK!'

@@ -11,28 +11,29 @@ source $SCRIPTD/../scripts/env-$BUILDER.sh
 
 cd $ROOT/tmp/
 
-NAME=pyoptim_312
+NAME=pyoptim_311
 
-# git clone https://github.com/python/cpython $NAME --branch=3.12 --single-branch --no-tags --depth=1
+# git clone https://github.com/python/cpython $NAME --branch=3.11 --single-branch --no-tags --depth=1
 
 cd $ROOT/tmp/$NAME
 
 git gc
 
-cp $SCRIPTD/Setup_312 Modules/Setup
+cp $SCRIPTD/Setup_311 Modules/Setup
 
 # Manual configure ...
-# https://docs.python.org/3.12/using/configure.html
+# https://docs.python.org/3.11/using/configure.html
 # Optimized mode flags from Cosmopolitan build/config.mk
 #
-./configure --disable-shared --with-static-libpython \
-    --without-doc-strings \
-    --disable-test-modules \
-    --without-system-expat \
-    --without-system-libmpdec \
-    --with-pymalloc \
+./configure --disable-shared \
     --with-ensurepip=no \
-    --prefix=$ROOT/o/ \
+    --with-pymalloc \
+    --with-static-libpython \
+    --without-doc-strings \
+    --without-system-expat \
+    --without-system-ffi \
+    --without-system-libmpdec \
+    --prefix=${ROOT}/o/ \
     CCSHARED=" " \
     LDSHARED=" " \
     CPPFLAGS="-Oz" \
@@ -40,7 +41,6 @@ cp $SCRIPTD/Setup_312 Modules/Setup
     LDFLAGS="-static -static-libgcc -fno-semantic-interposition -L$ROOT/o/lib" \
     CFLAGS="-Oz -fmerge-all-constants -fno-semantic-interposition \
     -I$ROOT/o/include -I$ROOT/o/include/ncurses -I$ROOT/o/include/uuid" \
-    MODULE_BUILDTYPE=static
 
 make -j4 EXTRA_CFLAGS='-DTHREAD_STACK_SIZE=0x100000'
 

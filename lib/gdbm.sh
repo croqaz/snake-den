@@ -41,3 +41,5 @@ export COMPATINCLUDEDIR="$ROOT/o/include/gdbm"
 make
 # Install ...
 make install
+
+echo 'OK!'

@@ -112,15 +112,16 @@ termios termios.c
 #_bz2 _bz2module.c -lbz2
 #_ctypes _ctypes/_ctypes.c _ctypes/callbacks.c _ctypes/callproc.c _ctypes/stgdict.c _ctypes/cfield.c -ldl -lffi -DHAVE_FFI_PREP_CIF_VAR -DHAVE_FFI_PREP_CLOSURE_LOC -DHAVE_FFI_CLOSURE_ALLOC
 # The _dbm module supports NDBM, GDBM with compat module, and Berkeley DB.
-#_dbm _dbmmodule.c -lgdbm_compat -DUSE_GDBM_COMPAT
-#_gdbm _gdbmmodule.c -lgdbm
+_dbm _dbmmodule.c -lgdbm_compat -DUSE_GDBM_COMPAT
+_gdbm _gdbmmodule.c -lgdbm
 _lzma _lzmamodule.c -llzma
 _uuid _uuidmodule.c -luuid
 #zlib  zlibmodule.c -lz
 
 # The readline module also supports libeditline (-leditline).
 # Some systems may require -ltermcap or -ltermlib.
-#readline readline.c -lreadline -ltermcap
+# readline readline.c -lreadline -ltinfo
+# libtinfo is from ncurses
 
 # OpenSSL bindings
 #_ssl _ssl.c $(OPENSSL_INCLUDES) $(OPENSSL_LDFLAGS) $(OPENSSL_LIBS)
@@ -134,8 +135,8 @@ _uuid _uuidmodule.c -luuid
 #     -l:libcrypto.a -Wl,--exclude-libs,libcrypto.a
 
 # Some systems have -lcurses
-#_curses -lncurses -lncursesw -ltermcap _cursesmodule.c
-#_curses_panel -lpanel -lncurses _curses_panel.c
+_curses -lncurses -ltinfo _cursesmodule.c
+_curses_panel -lpanel -lncurses _curses_panel.c
 
 # Examples
 
@@ -159,4 +160,4 @@ xxsubtype xxsubtype.c  # Required for the test suite to pass!
 # nis nismodule.c -I/usr/include/tirpc -lnsl -ltirpc
 # _crypt _cryptmodule.c -lcrypt # deprecated and slated for removal in Python 3.13
 
-_crypt _curses _curses_panel _sqlite3 _tkinter audioop nis ossaudiodev spwd
+_crypt _sqlite3 _tkinter audioop nis ossaudiodev spwd

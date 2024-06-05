@@ -1,23 +1,23 @@
 #!/usr/bin/env bash
 
-set -e
+set -euxo pipefail
 
 SCRIPTF=$(realpath "$0")  # full path
 SCRIPT=$(basename $SCRIPTF) # file
 SCRIPTD=$(dirname "$SCRIPTF") # folder
+BUILDER="${BUILDER:-cosmic}"
 
 # Read env variables for CC, C++, LD, etc
-source $SCRIPTD/../scripts/cosmic.sh
+source $SCRIPTD/../scripts/env-$BUILDER.sh
 
 cd $ROOT/tmp/
-echo $PWD
 
 # ncurses (new curses) library
 # https://invisible-island.net/ncurses/
 #
 NAME="${SCRIPT%.*}"
 
-mkdir $NAME
+mkdir -p $NAME
 wget -nv -O $NAME.tar.gz https://ftp.gnu.org/gnu/ncurses/ncurses-6.5.tar.gz
 tar xf $NAME.tar.gz --strip-components=1 -C $NAME
 echo "Archive downloaded and extracted"
@@ -27,7 +27,7 @@ echo $PWD
 
 # Configure ...
 ./configure --enable-static --disable-shared \
-    --disable-lib-suffixes\
+    --disable-lib-suffixes \
     --disable-stripping \
     --enable-widec \
     --with-curses-h \
@@ -41,9 +41,7 @@ echo $PWD
     --without-libtool \
     --without-manpages \
     --without-pcre2 \
-    --without-sysmouse\
-    --without-tack\
-    --without-tests \
+    --without-tack \
     --without-tests \
     --prefix=$ROOT/o/ \
     CFLAGS="-Os"
@@ -52,3 +50,5 @@ echo $PWD
 ape make
 # Install ...
 ape make install
+
+echo 'OK!'
