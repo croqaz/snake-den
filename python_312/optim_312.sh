@@ -25,13 +25,14 @@ cp $SCRIPTD/Setup_312 Modules/Setup
 # https://docs.python.org/3.12/using/configure.html
 # Optimized mode flags from Cosmopolitan build/config.mk
 #
-./configure --disable-shared --with-static-libpython \
-    --without-doc-strings \
+./configure --disable-shared \
     --disable-test-modules \
+    --with-ensurepip=no \
+    --with-pymalloc \
+    --with-static-libpython \
+    --without-doc-strings \
     --without-system-expat \
     --without-system-libmpdec \
-    --with-pymalloc \
-    --with-ensurepip=no \
     --prefix=$ROOT/o/ \
     CCSHARED=" " \
     LDSHARED=" " \

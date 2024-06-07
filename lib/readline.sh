@@ -26,6 +26,7 @@ cd $ROOT/tmp/$NAME
 echo $PWD
 
 # Configure ...
+# Depends on lib/ncurses
 ./configure --enable-static --disable-shared \
     --enable-multibyte \
     --with-curses \

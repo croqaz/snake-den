@@ -32,7 +32,7 @@ cd $ROOT/tmp/$NAME
     --without-examples \
     --without-pic \
     --without-tests \
-    --prefix=${ROOT}/o/ CFLAGS="-Os"
+    --prefix=$ROOT/o/ CFLAGS="-Os"
 
 # Build ...
 make

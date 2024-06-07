@@ -19,7 +19,7 @@ cd $ROOT/tmp/$NAME
 
 git gc
 
-cp $SCRIPTDIR/Setup_312 Modules/Setup
+cp $SCRIPTD/Setup_312 Modules/Setup
 
 # Manual configure ...
 # Super tiny linux x86 from Cosmopolitan build/config.mk
@@ -31,15 +31,15 @@ cp $SCRIPTDIR/Setup_312 Modules/Setup
     --without-system-libmpdec \
     --with-pymalloc \
     --with-ensurepip=no \
-    --prefix=${ROOT}/o/ \
+    --prefix=$ROOT/o/ \
     CCSHARED=" " \
     LDSHARED=" " \
     CPPFLAGS="-Os" \
     OPT="-Os -DTINY -DNDEBUG -DTRUSTWORTHY -Wall" \
-    LDFLAGS="-static -static-libgcc -L${ROOT}/o/lib" \
+    LDFLAGS="-static -static-libgcc -L$ROOT/o/lib" \
     CFLAGS="-Os -fno-align-functions -fno-align-jumps -fno-align-labels -fno-align-loops \
     -fschedule-insns2 -momit-leaf-frame-pointer -foptimize-sibling-calls -DDWARFLESS \
-    -I${ROOT}/o/include -I${ROOT}/o/include/uuid" \
+    -I$ROOT/o/include -I$ROOT/o/include/uuid" \
     MODULE_BUILDTYPE=static
 
 make -j4 EXTRA_CFLAGS='-DTHREAD_STACK_SIZE=0x100000'
