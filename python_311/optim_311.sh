@@ -13,7 +13,9 @@ cd $ROOT/tmp/
 
 NAME=pyoptim_311
 
-# git clone https://github.com/python/cpython $NAME --branch=3.11 --single-branch --no-tags --depth=1
+if [ ! -d $NAME ]; then
+    git clone https://github.com/python/cpython $NAME --branch=3.11 --single-branch --no-tags --depth=1
+fi
 
 cd $ROOT/tmp/$NAME
 

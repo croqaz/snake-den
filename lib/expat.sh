@@ -18,9 +18,12 @@ cd $ROOT/tmp/
 NAME="${SCRIPT%.*}"
 
 mkdir -p $NAME
-wget -nv -O $NAME.tar.gz https://github.com/libexpat/libexpat/releases/download/R_2_5_0/expat-2.5.0.tar.gz
-tar xf $NAME.tar.gz --strip-components=1 -C $NAME
-echo "Archive downloaded and extracted"
+
+if [ ! -f $NAME.tar.gz ]; then
+    wget -nv -O $NAME.tar.gz https://github.com/libexpat/libexpat/releases/download/R_2_5_0/expat-2.5.0.tar.gz
+    tar xf $NAME.tar.gz --strip-components=1 -C $NAME
+    echo "Archive downloaded and extracted"
+fi
 
 cd $ROOT/tmp/$NAME
 

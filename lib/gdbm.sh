@@ -17,10 +17,13 @@ cd $ROOT/tmp/
 #
 NAME="${SCRIPT%.*}"
 
-mkdir $NAME
-wget -nv -O $NAME.tar.gz https://ftp.gnu.org/gnu/gdbm/gdbm-1.23.tar.gz
-tar xf $NAME.tar.gz --strip-components=1 -C $NAME
-echo "Archive downloaded and extracted"
+mkdir -p $NAME
+
+if [ ! -f $NAME.tar.gz ]; then
+    wget -nv -O $NAME.tar.gz https://ftp.gnu.org/gnu/gdbm/gdbm-1.23.tar.gz
+    tar xf $NAME.tar.gz --strip-components=1 -C $NAME
+    echo "Archive downloaded and extracted"
+fi
 
 cd $ROOT/tmp/$NAME
 
