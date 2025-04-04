@@ -1,4 +1,4 @@
-FROM ubuntu:noble
+FROM ubuntu:latest
 
 ENV LANG=en_US.utf8  LC_ALL=en_US.utf8
 ENV TZ=Europe/London
@@ -13,6 +13,7 @@ RUN apt-get update && \
     git \
     gnupg \
     less \
+    libtool \
     locales \
     neovim \
     ninja-build \
@@ -38,18 +39,19 @@ RUN apt autoclean && apt autoremove --yes
 # RUN cd ~ && git clone https://github.com/jart/cosmopolitan.git --single-branch --no-tags --depth=1 && \
 # run setup & tool/cosmocc/package.sh Cosmocc
 
-# RUN cd /usr/local/bin/ && \
+# RUN cd ~/.local/bin/ && \
 #     # These utilities are not included in Cosmopolitan bootstrap
 #     wget -nv --limit-rate=1m https://cosmo.zip/pub/cosmos/bin/brotli && \
 #     wget -nv --limit-rate=1m https://cosmo.zip/pub/cosmos/bin/gmake && \
 #     wget -nv --limit-rate=1m https://cosmo.zip/pub/cosmos/bin/grep  && \
 #     wget -nv --limit-rate=1m https://cosmo.zip/pub/cosmos/bin/install && \
 #     wget -nv --limit-rate=1m https://cosmo.zip/pub/cosmos/bin/less && \
+#     wget -nv --limit-rate=1m https://cosmo.zip/pub/cosmos/bin/make && \
 #     wget -nv --limit-rate=1m https://cosmo.zip/pub/cosmos/bin/tar && \
 #     wget -nv --limit-rate=1m https://cosmo.zip/pub/cosmos/bin/tree && \
 #     wget -nv --limit-rate=1m https://cosmo.zip/pub/cosmos/bin/unzip && \
 #     wget -nv --limit-rate=1m https://cosmo.zip/pub/cosmos/bin/zip && \
-#     chmod +x /usr/local/bin/*
+#     chmod +x ~/.local/bin/*
 
 WORKDIR "/root/"
 
